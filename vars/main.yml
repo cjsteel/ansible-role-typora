@@ -1,0 +1,10 @@
+---
+# vars file for typora
+#
+# https://typora.io/linux ./ typora 0.9.86-1
+
+_typora_packages:
+  default:
+    - typora
+
+typora_packages: "{{ _typora_packages[ansible_os_family] | default(_typora_packages['default']) }}"

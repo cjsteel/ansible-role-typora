@@ -1,0 +1,29 @@
+---
+# tasks file for typora
+
+- name: Add Typora apt key by id from a keyserver
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: BA300B7755AFCFAE
+  register: typora_add_apt_key
+  
+- debug: var=typora_add_apt_key
+
+- name: Add Typora repository
+  apt_repository:
+    repo: 'deb https://typora.io/linux ./'
+    state: present
+  register: typora_add_apt_repo
+
+- debug: var=typora_add_apt_repo
+
+- name: install typora
+  package:
+    name: "{{ typora_packages }}"
+    state: present
+    update_cache: yes
+  register: typora_install_typora
+  until: typora_install_typora is succeeded
+  retries: 3
+
+- debug: var=typora_install_typora
